@@ -1,0 +1,5 @@
+// model Company {
+//     id String @id @default(cuid())
+//     name String
+//     email String @unique @db.VarChar(200)
+// }

@@ -13,7 +13,7 @@ import errorHandler from './middlewares/errorHandler.middleware';
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3000;
 
 //setup public directory
 app.use(express.static(path.join(__dirname, 'public')));
