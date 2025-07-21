@@ -6,5 +6,7 @@ const companyController = new CompanyController();
 
 compnayRouter.get('/:id', companyController.getById);
 compnayRouter.post('/', companyController.createCompany);
+compnayRouter.put('/:id', companyController.updateCompany);
+compnayRouter.delete('/:id', companyController.createCompany);
 
 export default compnayRouter;
