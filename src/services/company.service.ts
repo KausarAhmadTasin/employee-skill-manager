@@ -1,12 +1,13 @@
 // import type { Company } from '../prisma/generated';
 
-import { inject } from 'inversify';
+import { inject, injectable } from 'inversify';
 import { ICompanyService } from './interfaces/icompany.service';
 import { TYPES } from '../config/ioc.types';
 import IUnitOfWork from '../repositories/interfaces/iunitofwork.repository';
 import { CompanyDto } from '../dtos/company.dto';
 import { Company } from '../prisma/generated';
 
+@injectable()
 export default class CompnayService implements ICompanyService {
   constructor(@inject(TYPES.IUnitOfWork) private unitOfWork: IUnitOfWork) {}
 

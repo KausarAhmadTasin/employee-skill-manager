@@ -10,4 +10,5 @@ export const TYPES = {
   IUserRepository: Symbol.for('IUserRepository'),
   ICompanyRepository: Symbol.for('ICompanyRepository'),
   ICompanyService: Symbol.for('ICompanyService'),
+  CompanyController: Symbol.for('CompanyController'),
 };

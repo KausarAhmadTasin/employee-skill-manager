@@ -3,8 +3,12 @@ import CustomError from '../exceptions/custom-error';
 import container from '../config/ioc.config';
 import { TYPES } from '../config/ioc.types';
 import IUnitOfService from '../services/interfaces/iunitof.service';
+import { inject, injectable } from 'inversify';
 
+// @injectable()
 export default class CompanyController {
+  // constructor(@inject(TYPES.IUnitOfService) private unitOfService: IUnitOfService) {}
+
   constructor(private unitOfService = container.get<IUnitOfService>(TYPES.IUnitOfService)) {
     this.unitOfService = unitOfService;
   }

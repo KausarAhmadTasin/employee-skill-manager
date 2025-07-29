@@ -19,6 +19,7 @@ import { ICompanyRepository } from '../repositories/interfaces/icompany.reposito
 import { CompanyRepository } from '../repositories/company.repository';
 import CompnayService from '../services/company.service';
 import { ICompanyService } from '../services/interfaces/icompany.service';
+import CompanyController from '../controllers/company.controller';
 
 const container = new Container();
 
@@ -34,5 +35,6 @@ container.bind<IUserRepository>(TYPES.IUserRepository).to(UserRepository);
 
 container.bind<ICompanyRepository>(TYPES.ICompanyRepository).to(CompanyRepository);
 container.bind<ICompanyService>(TYPES.ICompanyService).to(CompnayService);
+container.bind<CompanyController>(TYPES.CompanyController).to(CompanyController);
 
 export default container;
