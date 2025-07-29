@@ -91,7 +91,7 @@ export class UserService implements IUserService {
           isPhoneVerified: false,
           twoFactorEnabled: false,
           role: role,
-          provider: AuthProvider.CREDENTIALS,
+          // provider: AuthProvider.CREDENTIALS,
           isActive: true,
         },
       });

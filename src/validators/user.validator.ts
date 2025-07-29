@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 import { CreateUserModel } from '../models/user.model';
+import { UserRole } from '@prisma/client';
 
 const CreateUserValidator: Yup.ObjectSchema<CreateUserModel> = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Email is required'),
@@ -13,6 +14,7 @@ const CreateUserValidator: Yup.ObjectSchema<CreateUserModel> = Yup.object().shap
   lastName: Yup.string().optional(),
   phoneNumber: Yup.string().optional(),
   phoneCountryCode: Yup.string().optional(),
+  role: Yup.mixed<UserRole>().optional(),
 });
 
 export default CreateUserValidator;

@@ -1,3 +1,5 @@
+import { UserRole } from '../prisma/generated';
+
 export interface CreateUserModel {
   email: string;
   password: string;
@@ -5,4 +7,5 @@ export interface CreateUserModel {
   lastName?: string;
   phoneNumber?: string;
   phoneCountryCode?: string;
+  role?: UserRole;
 }

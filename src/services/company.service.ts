@@ -1,45 +1,65 @@
-import { PrismaClient, Company } from '@prisma/client';
 // import type { Company } from '../prisma/generated';
 
-const prisma = new PrismaClient();
+import { inject } from 'inversify';
+import { ICompanyService } from './interfaces/icompany.service';
+import { TYPES } from '../config/ioc.types';
+import IUnitOfWork from '../repositories/interfaces/iunitofwork.repository';
+import { CompanyDto } from '../dtos/company.dto';
+import { Company } from '../prisma/generated';
 
-export default class CompnayService {
-  async create(data: Company): Promise<Company> {
-    const company = await prisma.company.create({
-      data,
-    });
-
-    return company;
-  }
+export default class CompnayService implements ICompanyService {
+  constructor(@inject(TYPES.IUnitOfWork) private unitOfWork: IUnitOfWork) {}
 
   async findById(id: string): Promise<Company | null> {
-    const company = await prisma.company.findUnique({ where: { id } });
-    if (!company) return null;
+    const company = await this.unitOfWork.Company.findById(id);
 
-    return company;
-  }
-
-  async update(id: string, data: Company): Promise<Company | null> {
-    try {
-      const updated = await prisma.company.update({
-        where: { id },
-        data,
-      });
-
-      return updated;
-    } catch (err) {
+    if (!company) {
       return null;
     }
+
+    return this.convertToDto(company);
   }
 
-  async delete(id: string): Promise<boolean> {
-    try {
-      await prisma.company.delete({
-        where: { id },
+  async create(data: Company): Promise<Company | null> {
+    return this.unitOfWork.transaction(async (transactionClient) => {
+      const company = await transactionClient.company.create({
+        data: {
+          name: data.name,
+          email: data.email,
+        },
       });
-      return true;
-    } catch (err) {
-      return false;
+
+      return this.convertToDto(company);
+    });
+  }
+
+  async update(id: string, data: CompanyDto): Promise<Company | null> {
+    const company = await this.unitOfWork.Company.update(id, {
+      ...data,
+    });
+
+    if (!company) {
+      return null;
     }
+
+    return this.convertToDto(company);
+  }
+
+  async delete(id: string): Promise<CompanyDto | null> {
+    const company = await this.unitOfWork.Company.delete(id);
+
+    if (!company) {
+      return null;
+    }
+
+    return this.convertToDto(company);
+  }
+
+  private convertToDto(company: Company): CompanyDto {
+    return {
+      id: company.id,
+      name: company.name,
+      email: company.email,
+    };
   }
 }

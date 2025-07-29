@@ -8,4 +8,6 @@ export const TYPES = {
 
   IUnitOfWork: Symbol.for('IUnitOfWork'),
   IUserRepository: Symbol.for('IUserRepository'),
+  ICompanyRepository: Symbol.for('ICompanyRepository'),
+  ICompanyService: Symbol.for('ICompanyService'),
 };

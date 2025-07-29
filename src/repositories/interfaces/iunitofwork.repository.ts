@@ -1,8 +1,10 @@
 import { IUserRepository } from './iuser.repository';
 import { Prisma } from '../../prisma/generated';
+import { ICompanyRepository } from './icompany.repository';
 
 export default interface IUnitOfWork {
   User: IUserRepository;
+  Company: ICompanyRepository;
 
   /**
    * Executes a set of operations within a database transaction.

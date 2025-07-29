@@ -15,6 +15,10 @@ import { UserRepository } from '../repositories/user.repository';
 import { IUserRepository } from '../repositories/interfaces/iuser.repository';
 import UnitOfWork from '../repositories/unitofwork.repository';
 import IUnitOfWork from '../repositories/interfaces/iunitofwork.repository';
+import { ICompanyRepository } from '../repositories/interfaces/icompany.repository';
+import { CompanyRepository } from '../repositories/company.repository';
+import CompnayService from '../services/company.service';
+import { ICompanyService } from '../services/interfaces/icompany.service';
 
 const container = new Container();
 
@@ -27,5 +31,8 @@ container.bind<IUserService>(TYPES.IUserService).to(UserService);
 
 container.bind<IUnitOfWork>(TYPES.IUnitOfWork).to(UnitOfWork);
 container.bind<IUserRepository>(TYPES.IUserRepository).to(UserRepository);
+
+container.bind<ICompanyRepository>(TYPES.ICompanyRepository).to(CompanyRepository);
+container.bind<ICompanyService>(TYPES.ICompanyService).to(CompnayService);
 
 export default container;

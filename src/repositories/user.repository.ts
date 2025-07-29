@@ -102,6 +102,7 @@ export class UserRepository implements IUserRepository {
    * @param id - The unique identifier of the user to delete.
    * @returns A promise that resolves to the deleted User object.
    */
+
   async delete(id: string): Promise<User> {
     return prisma.user.delete({
       where: { id },

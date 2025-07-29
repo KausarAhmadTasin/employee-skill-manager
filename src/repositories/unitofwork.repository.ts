@@ -4,11 +4,15 @@ import IUnitOfWork from './interfaces/iunitofwork.repository';
 import { IUserRepository } from './interfaces/iuser.repository';
 import prisma from '../prisma';
 import { Prisma } from '../prisma/generated';
+import { ICompanyRepository } from './interfaces/icompany.repository';
 
 export default class UnitOfWork implements IUnitOfWork {
   public User: IUserRepository;
-  constructor(user = container.get<IUserRepository>(TYPES.IUserRepository)) {
+  public Company: ICompanyRepository;
+
+  constructor(user = container.get<IUserRepository>(TYPES.IUserRepository), company = container.get<ICompanyRepository>(TYPES.ICompanyRepository)) {
     this.User = user;
+    this.Company = company;
   }
 
   /**

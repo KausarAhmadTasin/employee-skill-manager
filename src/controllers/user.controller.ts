@@ -5,6 +5,8 @@ import container from '../config/ioc.config';
 import IUnitOfService from '../services/interfaces/iunitof.service';
 import { TYPES } from '../config/ioc.types';
 import CustomError from '../exceptions/custom-error';
+import { CreateUserModel } from '../models/user.model';
+import { UserRole } from '@prisma/client';
 
 export class UserController {
   constructor(private unitOfService = container.get<IUnitOfService>(TYPES.IUnitOfService)) {
@@ -123,6 +125,20 @@ export class UserController {
 
     return res.status(200).json(response);
   };
+
+  async create(req: Request, res: Response): Promise<Response<CustomResponse<UserDto>>> {
+    const data = req.body as CreateUserModel;
+    const role = data.role as UserRole;
+
+    const user = await this.unitOfService.User.create(data, role);
+
+    const response: CustomResponse<UserDto | null> = {
+      success: true,
+      data: user,
+    };
+
+    return res.status(200).json(response);
+  }
 
   /**
    * Deletes a user by their unique identifier.

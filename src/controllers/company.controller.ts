@@ -1,13 +1,16 @@
 import { Request, Response } from 'express';
 import CustomError from '../exceptions/custom-error';
-import CompnayService from '../services/company.service';
-
-const compnayService = new CompnayService();
+import container from '../config/ioc.config';
+import { TYPES } from '../config/ioc.types';
+import IUnitOfService from '../services/interfaces/iunitof.service';
 
 export default class CompanyController {
+  constructor(private unitOfService = container.get<IUnitOfService>(TYPES.IUnitOfService)) {
+    this.unitOfService = unitOfService;
+  }
   async createCompany(req: Request, res: Response) {
     try {
-      const company = compnayService.create(req?.body);
+      const company = this.unitOfService.Company.create(req?.body);
       res.status(201).json(company);
     } catch (err) {
       res.status(400).json({ message: 'Failed to create company!', error: err });
@@ -21,7 +24,7 @@ export default class CompanyController {
       throw new CustomError('Companu ID is required', 400);
     }
 
-    const company = await compnayService.findById(id);
+    const company = await this.unitOfService.Company.findById(id);
 
     if (company) {
       res.status(200).json(company);
@@ -38,7 +41,7 @@ export default class CompanyController {
         throw new CustomError('Company ID is required for update', 400);
       }
 
-      const update = await compnayService.update(id, req?.body);
+      const update = await this.unitOfService.Company.update(id, req?.body);
 
       if (update) {
         res.status(200).json({ message: 'Company updated successfully!', data: update });
@@ -57,7 +60,7 @@ export default class CompanyController {
       if (!id) {
         throw new CustomError('Company ID is required for deletion', 400);
       }
-      const deleted = await compnayService.delete(id);
+      const deleted = await this.unitOfService.Company.delete(id);
 
       if (deleted) {
         res.status(200).json({ message: 'Company deleted successfully' });

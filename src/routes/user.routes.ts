@@ -11,6 +11,7 @@ const userRouter = Router();
 
 const userController = container.get<UserController>(TYPES.UserController);
 
+userRouter.post('/me', asyncHandler(userController.create));
 userRouter.get('/me', [authentication], asyncHandler(userController.getCurrentUser));
 userRouter.get('/getbyemail', [authentication], asyncHandler(userController.getUserByEmail));
 userRouter.get('/:id', [authentication], asyncHandler(userController.getUserById));
