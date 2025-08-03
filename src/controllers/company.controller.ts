@@ -1,22 +1,19 @@
 import { Request, Response } from 'express';
 import CustomError from '../exceptions/custom-error';
-import container from '../config/ioc.config';
 import { TYPES } from '../config/ioc.types';
 import IUnitOfService from '../services/interfaces/iunitof.service';
 import { inject, injectable } from 'inversify';
 
-// @injectable()
+@injectable()
 export default class CompanyController {
-  // constructor(@inject(TYPES.IUnitOfService) private unitOfService: IUnitOfService) {}
+  constructor(@inject(TYPES.IUnitOfService) private unitOfService: IUnitOfService) {}
 
-  constructor(private unitOfService = container.get<IUnitOfService>(TYPES.IUnitOfService)) {
-    this.unitOfService = unitOfService;
-  }
   async createCompany(req: Request, res: Response) {
     try {
-      const company = this.unitOfService.Company.create(req?.body);
+      const company = await this.unitOfService.Company.create(req?.body);
       res.status(201).json(company);
     } catch (err) {
+      console.log('Error creating company:', err);
       res.status(400).json({ message: 'Failed to create company!', error: err });
     }
   }
@@ -69,7 +66,7 @@ export default class CompanyController {
       if (deleted) {
         res.status(200).json({ message: 'Company deleted successfully' });
       } else {
-        res.status(404).json({ message: 'Company not found' });
+        res.status(400).json({ message: 'Company not found' });
       }
     } catch (err) {
       res.status(400).json({ message: 'Failed to delete company', error: err });

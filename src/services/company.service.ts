@@ -8,7 +8,7 @@ import { CompanyDto } from '../dtos/company.dto';
 import { Company } from '../prisma/generated';
 
 @injectable()
-export default class CompnayService implements ICompanyService {
+export default class CompanyService implements ICompanyService {
   constructor(@inject(TYPES.IUnitOfWork) private unitOfWork: IUnitOfWork) {}
 
   async findById(id: string): Promise<Company | null> {
