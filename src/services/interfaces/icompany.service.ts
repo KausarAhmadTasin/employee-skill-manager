@@ -1,10 +1,10 @@
 import { CompanyDto } from '../../dtos/company.dto';
-import { CompanyModel } from '../../models/company.model';
+import { Company } from '../../prisma/generated';
 
 export interface ICompanyService {
   findById(id: string): Promise<CompanyDto | null>;
 
-  create(data: CompanyModel): Promise<CompanyDto | null>;
+  create(data: Company): Promise<CompanyDto | null>;
 
   update(id: string, data: CompanyDto): Promise<CompanyDto | null>;
 

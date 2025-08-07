@@ -11,7 +11,7 @@ import { Company } from '../prisma/generated';
 export default class CompanyService implements ICompanyService {
   constructor(@inject(TYPES.IUnitOfWork) private unitOfWork: IUnitOfWork) {}
 
-  async findById(id: string): Promise<Company | null> {
+  async findById(id: string): Promise<CompanyDto | null> {
     const company = await this.unitOfWork.Company.findById(id);
 
     if (!company) {
@@ -21,12 +21,13 @@ export default class CompanyService implements ICompanyService {
     return this.convertToDto(company);
   }
 
-  async create(data: Company): Promise<Company | null> {
+  async create(data: Company): Promise<CompanyDto | null> {
     return this.unitOfWork.transaction(async (transactionClient) => {
       const company = await transactionClient.company.create({
         data: {
           name: data.name,
           email: data.email,
+          hashedPassword: data.hashedPassword,
         },
       });
 
@@ -34,7 +35,7 @@ export default class CompanyService implements ICompanyService {
     });
   }
 
-  async update(id: string, data: CompanyDto): Promise<Company | null> {
+  async update(id: string, data: CompanyDto): Promise<CompanyDto | null> {
     const company = await this.unitOfWork.Company.update(id, {
       ...data,
     });
@@ -61,6 +62,9 @@ export default class CompanyService implements ICompanyService {
       id: company.id,
       name: company.name,
       email: company.email,
+      hashedPassword: company.hashedPassword,
+      updatedAt: company.updatedAt,
+      createdAt: company.createdAt,
     };
   }
 }

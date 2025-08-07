@@ -1,4 +1,4 @@
-import { Company } from '@prisma/client';
+import { Company } from '../../prisma/generated';
 
 export interface ICompanyRepository {
   findById(id: string): Promise<Company | null>;
