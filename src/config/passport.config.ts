@@ -1,23 +1,35 @@
+import { ExtractJwt, Strategy } from 'passport-jwt';
+import { IAuthService } from '../services/interfaces/iauth.service';
 import passport from 'passport';
-import { Strategy, ExtractJwt } from 'passport-jwt';
-import { CompanyRepository } from '../repositories/company.repository';
-import { Company } from '../prisma/generated';
+import { inject, injectable } from 'inversify';
+import { TYPES } from './ioc.types';
 
-const opts = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: process.env.JWT_SECRET!,
-};
+@injectable()
+export class PassportConfig {
+  // constructor(private authService: IAuthService) {}
+  constructor(@inject(TYPES.IAuthService) private authService: IAuthService) {
+    this.initialize();
+  }
 
-passport.use(
-  new Strategy(opts, async (jwt_payload: IJwtPayload, done: (error: any, company?: any) => void) => {
-    try {
-      const compnayRepo = new CompanyRepository();
-      const company: Company | null = await compnayRepo.findById(jwt_payload.id);
-      if (company) return done(null, company);
+  private initialize(): void {
+    const otps = {
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      // secretOrKey: process.env.JWT_SECRET!,
+      secretOrKey: process.env.JWT_SECRET as string,
+    };
 
-      return done(null, false);
-    } catch (err) {
-      return done(err, false);
-    }
-  })
-);
+    passport.use(
+      new Strategy(otps, async (jwtPayload, done) => {
+        try {
+          const company = await this.authService.findCompanyById(jwtPayload.id);
+          if (company) {
+            return done(null, company);
+          }
+          return done(null, false);
+        } catch (err) {
+          return done(err, false);
+        }
+      })
+    );
+  }
+}

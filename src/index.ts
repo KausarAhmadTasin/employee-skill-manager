@@ -8,7 +8,9 @@ import routes from './routes/index.routes';
 import ClientIdMiddleware from './middlewares/clientid.middleware';
 import asyncHandler from './middlewares/asyncHandler.middleware';
 import errorHandler from './middlewares/errorHandler.middleware';
-
+import passport from 'passport';
+import { PassportConfig } from './config/passport.config';
+import container from './config/ioc.config';
 // Load environment variables
 dotenv.config();
 
@@ -26,6 +28,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //setup cors
 app.use(cors());
+
+app.use(passport.initialize());
+container.get<PassportConfig>(PassportConfig);
 
 app.use(asyncHandler(ClientIdMiddleware.verify));
 

@@ -6,6 +6,7 @@ import { TYPES } from '../config/ioc.types';
 import IUnitOfWork from '../repositories/interfaces/iunitofwork.repository';
 import { CompanyDto } from '../dtos/company.dto';
 import { Company } from '../prisma/generated';
+import bcrypt from 'bcrypt';
 
 @injectable()
 export default class CompanyService implements ICompanyService {
@@ -23,11 +24,12 @@ export default class CompanyService implements ICompanyService {
 
   async create(data: Company): Promise<CompanyDto | null> {
     return this.unitOfWork.transaction(async (transactionClient) => {
+      const hashedPassword = await bcrypt.hash(data.hashedPassword, 10);
       const company = await transactionClient.company.create({
         data: {
           name: data.name,
           email: data.email,
-          hashedPassword: data.hashedPassword,
+          hashedPassword,
         },
       });
 

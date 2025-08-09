@@ -3,6 +3,6 @@ export interface CompanyDto {
   name: string;
   email: string;
   hashedPassword: string;
-  updatedAt: Date;
-  createdAt: Date;
+  createdAt: Date | null;
+  updatedAt: Date | null;
 }

@@ -13,7 +13,7 @@ model Company {
   id    String @id @default(cuid())
   name  String
   email String @unique @db.VarChar(200)
-  hashedPassword String
+  hashedPassword String @default("")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
