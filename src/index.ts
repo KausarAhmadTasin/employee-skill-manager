@@ -15,7 +15,6 @@ import container from './config/ioc.config';
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 3000;
 
 //setup public directory
 app.use(express.static(path.join(__dirname, 'public')));
@@ -40,7 +39,4 @@ app.use('/api', routes);
 // Error-handling middleware
 app.use(errorHandler);
 
-// Start server
-app.listen(port, () => {
-  console.log(`Server is running on port http://localhost:${port}`);
-});
+export default app;
